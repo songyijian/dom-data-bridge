@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>My-App</title>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+
+  <meta macro data-STAR={{STAR.val}} data-CONTENT={{CONTENT.val}}>
+  <meta macro data-STAR=3 data-CLOSE_CARD={{CLOSE_CARD.val}} data-PRODUCT_ID={{PRODUCT_ID.val}}>
+  <script macro type="text/template">
+    {
+      "star":"{{STAR.val}}",
+      "CONTENT":"xxxxxxx",
+      "CLOSE_CARD":"{{CLOSE_CARD.val}}"
+    }
+  </script>
+  <script macro type="text/template">
+    {
+      "star":10,
+      "CONTENT":"{{CONTENT.val}}",
+      "CLOSE_CARD":"{{CLOSE_CARD.val}}"
+    }
+  </script>
+
+  <script src="./src/mian.js"></script>
+
+</head>
+
+<body>
+
+  <script>
+    // 会在这里注入一个domRoot变量， 指向dom的根
+    // var domRoot = domRoot || document.querySelector('[_tag]')
+    // var s = document.querySelector.bind(document)
+  </script>
+
+</body>
+
+</html>
