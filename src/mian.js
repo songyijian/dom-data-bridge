@@ -35,7 +35,7 @@ export default class DomDataDridge{
     }
   }
 
-  get(schema){
+  get(schema, freeze=true) {
     if(!isObj(schema)) throw Error(`${this} schema is not a JSON`);
     let a = {}
     for (const key in schema) {
@@ -51,6 +51,6 @@ export default class DomDataDridge{
         }
       }
     }
-    return Object.freeze(a)
+    return freeze ? Object.freeze(a) : a
   }
 }

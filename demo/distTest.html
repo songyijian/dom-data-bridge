@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>My-App</title>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+  <script src="../dist/index.js"></script>
+
+</head>
+
+<body>
+  <h1>dataset to json</h1>
+  <!-- <meta macro data-star={{STAR}} data-CONTENT={{CONTENT}} data-ITEMS={{ITEMS}} data-URL={{URL}} data-TEMP_ERR={{TEMP_ERR}}> -->
+  <meta macro data-star=4.5 data-CONTENT=字符串内容的'双引号'要编译更不要出现 data-ITEMS=[1,2,3,4]
+    data-URL=https://github.com/songyijian/dom-data-bridge data-TEMP_ERR={{TEMP_ERR}} />
+  <br>
+
+  <h1>template string to json</h1>
+  <!-- <script macro type="text/template">
+    { 
+      "star":"{{STAT}}", 
+      "CONTENT":"{{CONTENT}}", 
+      "TEST":"{{TEST}}",
+      "ITEMS":"{{ITEMS}}"
+    }
+  </script> -->
+  <script macro type="text/template">
+    { 
+    "star":"4.5", 
+    "CONTENT":"一段内容", 
+    "ITEMS":"[1,2,3,4]",
+    "URL":"https://github.com/songyijian/dom-data-bridge",
+    "TEMP_ERR":"{{TEMP_ERR}}"
+    }
+  </script>
+
+
+
+  <script>
+
+    /**
+     * 解析 json 格式的字符串 
+     */
+    const pjson = new DomDataDridge( { exclude:/^\{\{[a-zA-Z\.\_]+\}\}/g })
+
+    let templateData = document.querySelector('script[macro][type="text/template"]')
+    let macro = templateData.innerHTML
+    pjson.push(macro)
+
+
+    const getJsonStr = pjson.get({
+      star:{
+        type: Number
+      },
+      CONTENT:{
+        type: String,
+      },
+      URL:{
+        type:/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/,
+        default:'http://www.baidu.com'
+      },
+      ITEMS:{
+        type:Array,
+        default:[] //不能被解析成字符串就走
+      },
+      UNDFUND:{
+        type:String,
+        default:'默认值'
+      },
+      TEMP_ERR:{
+        type:String,
+        // {{TEMP_ERR}} 替换失败的模版，利用 exclude 统一排除
+      }
+    })
+
+    console.log(pjson.dataMap)
+    console.log(getJsonStr)
+
+  </script>
+
+
+  <script>
+    /***
+     * 
+     * 解析 dom dataset 数据 
+     * 
+     */
+    const pdataset = new DomDataDridge({exclude: /^\{\{[a-zA-Z\.\_]+\}\}/g})
+    const datasetData = document.querySelectorAll('meta[macro]')
+    pdataset.push(datasetData.dataset)
+
+
+    const getDataSet = pdataset.get({
+      star: {
+        type: Number
+      },
+      CONTENT: {
+        type: String,
+        default: 'key大写一定取不到' //不能被解析，默认值
+      },
+      URL: {
+        type: /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/,
+        default: 'http://www.baidu.com'
+      },
+      ITEMS: {
+        type: Array,
+        default: []
+      },
+      temp_err: {
+        type: String,
+        // {{TEMP_ERR}} 替换失败的模版，利用 exclude 统一排除
+      }
+    })
+
+    console.log(pdataset.dataMap)
+    console.log(getDataSet)
+  </script>
+
+
+</body>
+
+</html>

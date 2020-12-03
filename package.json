@@ -5,10 +5,18 @@
   "main": "index.js",
   "keywords": [
     "domData",
+    "data-",
+    "data-attry",
+    "attry",
+    "json",
+    "prase",
+    "jsonprase",
     "dataset",
     "templetjson",
     "jsonstring",
     "databridge",
+    "DomDataDridge",
+    "dom-data-dridge",
     "js"
   ],
   "author": "yijian.song <397032724@qq.com> (https://github.com/songyijian)",
@@ -27,7 +35,8 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --config build/webpack.dev.config.js --NODE_ENV=development",
-    "build": "webpack --config build/webpack.build.config.js --NODE_ENV=production"
+    "build": "webpack --config build/webpack.build.config.js --NODE_ENV=production",
+    "pushnpm": "npm run build && git add . && git commit -m 'npm publish' && git push && npm publish"
   },
   "repository": {
     "type": "git",
