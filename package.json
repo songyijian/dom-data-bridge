@@ -36,7 +36,8 @@
   "scripts": {
     "dev": "webpack-dev-server --config build/webpack.dev.config.js --NODE_ENV=development",
     "build": "webpack --config build/webpack.build.config.js --NODE_ENV=production",
-    "pushnpm": "npm run build && git add . && git commit -m 'npm publish' && git push && npm publish"
+    "pushnpm": "git push && npm publish"
+
   },
   "repository": {
     "type": "git",
