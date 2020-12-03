@@ -1,7 +1,47 @@
 # dom-data-bridge
 js读取写在dom内的数据
 
+## 安装
+```JS
+// npm 
+npm install dom-data-bridge  // 装载
+npm update dom-data-bridge   // 更新
 
+// yarn
+yarn add dom-data-bridge     // 装载
+yarn upgrade dom-data-bridge // 更新
+
+// Browserify(https://github.com/songyijian/dom-data-bridge)
+<script src="../dist/index.js"></script> 
+```
+## API
+```JS
+import DomDataDridge from 'dom-data-bridge'
+
+const demo = new DomDataDridge({
+  exclude:<RegExp>    // 排除指定字符 /^\{\{[a-zA-Z\.\_]+\}\}/g = {{xx}}
+})
+
+FN
+  // 插入（合并）要解析的内容
+  demo.push( "{json}"| <DOMStringMap> )
+
+  // 获取数据
+  demo.get(
+    { // 解析｜验证规则
+      key:{
+        type: Number, // 解析类型 （String|Number|Boolean|Object|Array) || RegExp正则验证
+        default:2 // 默认值
+      },
+    }, 
+    true // 建议开启Object.freeze（保护数被串改）
+  )
+
+ATTR
+  this.dataMap = {}   // 原始数据源
+  this.exclude = data.exclude // 全局排除规则
+
+```
 
 ## 解析json格式的字符串数据 
 ```html
