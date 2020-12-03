@@ -1,5 +1,5 @@
 # dom-data-bridge
-js读取写在dom内的数据
+用于解析html内的数据对象
 
 ## 安装
 ```JS
