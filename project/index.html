@@ -8,24 +8,36 @@
   <title>My-App</title>
   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 
-  <meta macro data-STAR={{STAR.val}} data-CONTENT={{CONTENT.val}}>
-  <meta macro data-STAR=3 data-CLOSE_CARD={{CLOSE_CARD.val}} data-PRODUCT_ID={{PRODUCT_ID.val}}>
-  <script macro type="text/template">
-    {
-      "star":"{{STAR.val}}",
-      "CONTENT":"xxxxxxx",
-      "CLOSE_CARD":"{{CLOSE_CARD.val}}"
-    }
-  </script>
-  <script macro type="text/template">
-    {
-      "star":10,
-      "CONTENT":"{{CONTENT.val}}",
-      "CLOSE_CARD":"{{CLOSE_CARD.val}}"
-    }
-  </script>
+  <!-- <meta macro data-STAR={{STAR.val}} data-SSS={{SSS.val}}> -->
+  <meta macro 
+    data-star=4.5
+    data-CONTENT=一段"引号"内-容
+    data-ITEMS=[1,2,3,4]
+    data-URL=https://github.com/songyijian/dom-data-bridge
+    data-TEMP_ERR={{TEMP_ERR}}
+  >
 
-  <script src="./src/mian.js"></script>
+
+
+<!-- <script macro type="text/template">
+  { 
+    "star":"{{STAT}}", 
+    "CONTENT":"{{CONTENT}}", 
+    "TEST":"{{TEST}}",
+    "ITEMS":"{{ITEMS}}"
+  }
+</script> -->
+
+<script macro type="text/template">
+{ 
+"star":"4.5", 
+"CONTENT":"一段内容", 
+"ITEMS":"[1,2,3,4]",
+"URL":"https://github.com/songyijian/dom-data-bridge",
+"TEMP_ERR":"{{TEMP_ERR}}"
+}
+</script>
+
 
 </head>
 
