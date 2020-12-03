@@ -8,40 +8,42 @@
   <title>My-App</title>
   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 
-  <!-- <meta macro data-STAR={{STAR.val}} data-SSS={{SSS.val}}> -->
-  <meta macro 
-    data-star=4.5
-    data-CONTENT=一段"引号"内-容
-    data-ITEMS=[1,2,3,4]
-    data-URL=https://github.com/songyijian/dom-data-bridge
-    data-TEMP_ERR={{TEMP_ERR}}
-  >
-
-
-
-<!-- <script macro type="text/template">
-  { 
-    "star":"{{STAT}}", 
-    "CONTENT":"{{CONTENT}}", 
-    "TEST":"{{TEST}}",
-    "ITEMS":"{{ITEMS}}"
-  }
-</script> -->
-
-<script macro type="text/template">
-{ 
-"star":"4.5", 
-"CONTENT":"一段内容", 
-"ITEMS":"[1,2,3,4]",
-"URL":"https://github.com/songyijian/dom-data-bridge",
-"TEMP_ERR":"{{TEMP_ERR}}"
-}
-</script>
-
-
 </head>
 
 <body>
+  <h1>dataset to json</h1>
+  <!-- <meta macro data-star={{STAR}} data-CONTENT={{CONTENT}} data-ITEMS={{ITEMS}} data-URL={{URL}} data-TEMP_ERR={{TEMP_ERR}}> -->
+  <meta macro 
+    data-star=4.5
+    data-CONTENT=字符串内容的'双引号'要编译更不要出现
+    data-ITEMS=[1,2,3,4]
+    data-URL=https://github.com/songyijian/dom-data-bridge
+    data-TEMP_ERR={{TEMP_ERR}}
+  />
+
+<br>
+
+  <h1>template string to json</h1>
+  <!-- <script macro type="text/template">
+    { 
+      "star":"{{STAT}}", 
+      "CONTENT":"{{CONTENT}}", 
+      "TEST":"{{TEST}}",
+      "ITEMS":"{{ITEMS}}"
+    }
+  </script> -->
+  <script macro type="text/template">
+    { 
+    "star":"4.5", 
+    "CONTENT":"一段内容", 
+    "ITEMS":"[1,2,3,4]",
+    "URL":"https://github.com/songyijian/dom-data-bridge",
+    "TEMP_ERR":"{{TEMP_ERR}}"
+    }
+  </script>
+
+
+
 
   <script>
     // 会在这里注入一个domRoot变量， 指向dom的根

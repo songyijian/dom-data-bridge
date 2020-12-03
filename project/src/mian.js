@@ -26,8 +26,8 @@ export default class DomDataDridge{
     let type = validate.type
     let _default = validate.default
     try{
-      if(this.exclude)if(this.exclude.test(this.dataMap[key])) throw new Error(`${this.dataMap[key]} by exclude excluded`);
-      if(isRegExp(type)) if(type.test(this.dataMap[key])) return this.dataMap[key];
+      if(this.exclude && this.exclude.test(this.dataMap[key])) throw new Error(`${this.dataMap[key]} by exclude excluded`);
+      if(isRegExp(type) && type.test(this.dataMap[key])) return this.dataMap[key];
       return type ? parseMuster[ type.name || String(type) ](this.dataMap[key]) : this.dataMap[key];
     }catch(err){
       // console.error(err)
@@ -42,7 +42,10 @@ export default class DomDataDridge{
       if (schema.hasOwnProperty(key)) {
         const validate = schema[key];
         if(key in this.dataMap){
-          if( isObj(validate) && ('type' in validate || 'default' in validate)) a[key] = this.schemaParse(key, validate);
+          if( isObj(validate) && ('type' in validate || 'default' in validate)){
+            let getVal = this.schemaParse(key, validate)
+            getVal!==undefined && (a[key] = this.schemaParse(key, validate))
+          };
         }else{
           'default' in validate && (a[key] = validate['default'])
         }

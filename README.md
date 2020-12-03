@@ -3,35 +3,27 @@ js读取写在dom内的数据
 
 
 
-## 支持 innerText Json 注入
+## 解析json格式的字符串数据 
+```html
+stringJson应是一个标准json格式。 
+注意：value最好用“包裹”成字符串，避免第一层解析失败丢失整个json内的数据
+
+<!-- 解析内部数据 -->
+<script macro type="text/template">
+{ 
+  "star":"4.5", 
+  "CONTENT":"一段内容", 
+  "ITEMS":"[1,2,3,4]",
+  "URL":"https://github.com/songyijian/dom-data-bridge",
+  "TEMP_ERR":"{{TEMP_ERR}}"
+}
+</script>
+```
+
 ```js
-
 import DomDataDridge from './mian.js'
-
-const pjson = new DomDataDridge({
-  // 作用所有字段；利用其排除{{xx}}模版字符串等
-  exclude:/^\{\{[a-zA-Z\.\_]+\}\}/g  
-})
-
-/**
-模版；
-  <script macro type="text/template">
-    { "star":"{{STAT}}", "CONTENT":"{{CONTENT}}", "ITEM_LIST":"{{ITEM_LIST}}" }
-  </script>
-
-模版替换后；
-  <script macro type="text/template">
-    { "star":"4.5", "CONTENT":"一段内容", "ITEM_LIST":"[1,2,3,4]" }
-  </script>
- */
-let macrotemplate = document.querySelectorAll('script[macro][type="text/template"]')
-Array.from(macrotemplate).forEach(tag=>{
-  let macro = tag.innerHTML
-  pjson.push(macro)
-})
-
-
-var isUrl = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
+const pjson = new DomDataDridge({exclude:/^\{\{[a-zA-Z\.\_]+\}\}/g}) // 排除未替换的{{xx}}模版字符串
+Array.from(document.querySelectorAll('script[macro][type="text/template"]')).forEach(tag=>{ pjson.push(tag.innerHTML) })
 
 const getdata = pjson.get({
   star:{
@@ -42,7 +34,7 @@ const getdata = pjson.get({
     type: String,
   },
   URL:{
-    type:isUrl,
+    type:/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/,
     default:'http://www.baidu.com'
   },
   ITEMS:{
@@ -54,13 +46,12 @@ const getdata = pjson.get({
     default:'默认值'
   },
   TEMP_ERR:{
+    type:String,
     // {{TEMP_ERR}} 替换失败的模版，利用 exclude 统一排除
   }
 })
 
-
 console.log(pjson.dataMap, getdata)
-
 
 /*
 pjson.dataMap = {
@@ -70,7 +61,6 @@ pjson.dataMap = {
   URL: "https://github.com/songyijian/dom-data-bridge", 
   TEMP_ERR: "{{TEMP_ERR}}"
 }
-
 getdata = {
   star: 4.5, 
   CONTENT: "一段内容", 
@@ -78,6 +68,53 @@ getdata = {
   ITEMS: Array(4), 
   UNDFUND: "默认值"
 }
+*/
+
+```
+
+## 解析 dom dataset 数据 
+```html
+属性解析现在只能用data- 利用dataset的DOMStringMap属性来实现
+注意：html内的属性空格、""等特殊符号应该转译。
+     html不区分大小写， data-（强制解析成小写） 取值时要注意
+<meta macro 
+  data-star=4.5
+  data-CONTENT=字符串内容的'双引号'要编译更不要出现
+  data-ITEMS=[1,2,3,4]
+  data-URL=https://github.com/songyijian/dom-data-bridge
+  data-TEMP_ERR={{TEMP_ERR}}
+>
+```
+```js
+const pdataset = new DomDataDridge({ exclude:/^\{\{[a-zA-Z\.\_]+\}\}/g })
+Array.from(document.querySelectorAll('meta[macro]')).forEach(tag=>pdataset.push(tag.dataset))
+
+const getDataSet = pdataset.get({
+  star:{
+    type: Number
+  },
+  CONTENT:{
+    type: String,
+    default:'key大写一定取不到' //不能被解析，默认值
+  },
+  URL:{
+    type:/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/,
+    default:'http://www.baidu.com'
+  },
+  ITEMS:{
+    type:Array,
+    default:[]
+  },
+  temp_err:{
+    type: String,
+    // {{TEMP_ERR}} 替换失败的模版字符串，利用 exclude 统一排除
+  }
+})
+
+/*
+pdataset.dataMap = {star: "4.5", content: "字符串内容的'双引号'要编译更不要出现", items: "[1,2,3,4]", url: "https://github.com/songyijian/dom-data-bridge", temp_err: "{{TEMP_ERR}}"}
+
+getDataSet = {star: 4.5, CONTENT: "key大写一定取不到", URL: "http://www.baidu.com", ITEMS: Array(0)}
 */
 
 ```

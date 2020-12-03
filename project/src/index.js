@@ -1,30 +1,18 @@
 
-
-/**
- * 解析 json 格式的字符串 
- */
-
 import DomDataDridge from './mian.js'
 
-// const pjson = new DomDataDridge(
-//   {
-//     exclude:/^\{\{[a-zA-Z\.\_]+\}\}/g  // 作用所有字段；利用其排除{{xx}}模版字符串等
-//   }
-// )
+
 
 // /**
-// 模版；
-//   <script macro type="text/template">
-//     { "star":"{{STAT}}", "CONTENT":"{{CONTENT}}", "ITEM_LIST":"{{ITEM_LIST}}" }
-//   </script>
-
-// 模版替换后；
-//   <script macro type="text/template">
-//     { "star":"4.5", "CONTENT":"一段内容", "ITEM_LIST":"[1,2,3,4]" }
-//   </script>
+//  * 解析 json 格式的字符串 
 //  */
-// let macrotemplate = document.querySelectorAll('script[macro][type="text/template"]')
-// Array.from(macrotemplate).forEach(tag=>{
+// const pjson = new DomDataDridge(
+//   // {
+//   //   exclude:/^\{\{[a-zA-Z\.\_]+\}\}/g  // 作用所有字段；利用其排除{{xx}}模版字符串等
+//   // }
+// )
+// let templateData = document.querySelectorAll('script[macro][type="text/template"]')
+// Array.from(templateData).forEach(tag=>{
 //   let macro = tag.innerHTML
 //   pjson.push(macro)
 // })
@@ -32,8 +20,7 @@ import DomDataDridge from './mian.js'
 
 // const getJsonStr = pjson.get({
 //   star:{
-//     type: Number,
-//     default:2
+//     type: Number
 //   },
 //   CONTENT:{
 //     type: String,
@@ -51,30 +38,16 @@ import DomDataDridge from './mian.js'
 //     default:'默认值'
 //   },
 //   TEMP_ERR:{
+//     type:String,
 //     // {{TEMP_ERR}} 替换失败的模版，利用 exclude 统一排除
 //   }
 // })
 
-// console.log(pjson.dataMap, getJsonStr)
+// console.log(pjson.dataMap)
+// console.log(getJsonStr)
 
 
-/*
-pjson.dataMap = {
-  star: "4.5", 
-  CONTENT: "一段内容", 
-  ITEMS: "[1,2,3,4]", 
-  URL: "https://github.com/songyijian/dom-data-bridge", 
-  TEMP_ERR: "{{TEMP_ERR}}"
-}
 
-getJsonStr = {
-  star: 4.5, 
-  CONTENT: "一段内容", 
-  URL: "https://github.com/songyijian/dom-data-bridge", 
-  ITEMS: Array(4), 
-  UNDFUND: "默认值"
-}
-*/
 
 /***
  * 
@@ -82,27 +55,22 @@ getJsonStr = {
  * 
  */
 
-const pdataset = new DomDataDridge(
-  {
-    exclude:/^\{\{[a-zA-Z\.\_]+\}\}/g  // 作用所有字段；利用其排除{{xx}}模版字符串等
-  }
-)
+// 作用所有字段；利用其排除{{xx}}模版字符串等
+const pdataset = new DomDataDridge({ exclude:/^\{\{[a-zA-Z\.\_]+\}\}/g })
 
-
-let macrotemplate = document.querySelectorAll('meta[macro]')
-Array.from(macrotemplate).forEach(tag=>{
-  let macro = tag.dataset
-  pdataset.push(macro)
+let datasetData = document.querySelectorAll('meta[macro]')
+Array.from(datasetData).forEach(tag=>{
+  pdataset.push(tag.dataset)
 })
 
 
 const getDataSet = pdataset.get({
   star:{
-    type: Number,
-    default:2
+    type: Number
   },
-  content:{
+  CONTENT:{
     type: String,
+    default:'key大写一定取不到' //不能被解析，默认值
   },
   URL:{
     type:/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/,
@@ -110,16 +78,15 @@ const getDataSet = pdataset.get({
   },
   ITEMS:{
     type:Array,
-    default:[] //不能被解析成字符串就走
+    default:[]
   },
-  UNDFUND:{
-    type:String,
-    default:'默认值'
-  },
-  TEMP_ERR:{
+  temp_err:{
+    type: String,
     // {{TEMP_ERR}} 替换失败的模版，利用 exclude 统一排除
   }
 })
 
 
-console.log(pdataset.dataMap, getDataSet)
+console.log(pdataset.dataMap)
+console.log(getDataSet)
+
