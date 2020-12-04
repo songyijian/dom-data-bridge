@@ -17,7 +17,7 @@ export default class DomDataDridge{
       try {
         Object.assign(this.dataMap, JSON.parse(macro.trim()))
       } catch (error) {
-        console.error(error, macro)
+        console.error(` parse error ${macro} ignored`, error)
       }
     }
   }

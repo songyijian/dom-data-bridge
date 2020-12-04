@@ -44,26 +44,21 @@ ATTR
 ```
 
 ## 解析json格式的字符串数据 
-```html
-stringJson应是一个标准json格式。 
-注意：value最好用“包裹”成字符串，避免第一层解析失败丢失整个json内的数据
+字符串应是一个标准json格式。 
 
-<!-- 解析内部数据 -->
-<script macro type="text/template">
-{ 
-  "star":"4.5", 
-  "CONTENT":"一段内容", 
-  "ITEMS":"[1,2,3,4]",
-  "URL":"https://github.com/songyijian/dom-data-bridge",
-  "TEMP_ERR":"{{TEMP_ERR}}"
-}
-</script>
-```
 
 ```js
-import DomDataDridge from './mian.js'
 const pjson = new DomDataDridge({exclude:/^\{\{[a-zA-Z\.\_]+\}\}/g}) // 排除未替换的{{xx}}模版字符串
-Array.from(document.querySelectorAll('script[macro][type="text/template"]')).forEach(tag=>{ pjson.push(tag.innerHTML) })
+
+pjson.push(
+`{ 
+"star":"4.5", 
+"CONTENT":"一段内容", 
+"ITEMS":"[1,2,3,4]",
+"URL":"https://github.com/songyijian/dom-data-bridge",
+"TEMP_ERR":"{{TEMP_ERR}}"
+}`
+ )
 
 const getdata = pjson.get({
   star:{
@@ -99,7 +94,7 @@ pjson.dataMap = {
   CONTENT: "一段内容", 
   ITEMS: "[1,2,3,4]", 
   URL: "https://github.com/songyijian/dom-data-bridge", 
-  TEMP_ERR: "{{TEMP_ERR}}"
+  TEMP_ERR: "{{TEMP_ERR}}" //模版没有正确被替换
 }
 getdata = {
   star: 4.5, 
@@ -109,14 +104,12 @@ getdata = {
   UNDFUND: "默认值"
 }
 */
-
 ```
 
 ## 解析 dom dataset 数据 
+属性解析现在只能用data- 利用dataset的DOMStringMap属性来实现（html不区分大小写， data-（强制解析成小写）取值时要注意）
 ```html
-属性解析现在只能用data- 利用dataset的DOMStringMap属性来实现
-注意：html内的属性空格、""等特殊符号应该转译。
-     html不区分大小写， data-（强制解析成小写） 取值时要注意
+     
 <meta macro 
   data-star=4.5
   data-CONTENT=字符串内容的'双引号'要编译更不要出现
@@ -153,7 +146,6 @@ const getDataSet = pdataset.get({
 
 /*
 pdataset.dataMap = {star: "4.5", content: "字符串内容的'双引号'要编译更不要出现", items: "[1,2,3,4]", url: "https://github.com/songyijian/dom-data-bridge", temp_err: "{{TEMP_ERR}}"}
-
 getDataSet = {star: 4.5, CONTENT: "key大写一定取不到", URL: "http://www.baidu.com", ITEMS: Array(0)}
 */
 
