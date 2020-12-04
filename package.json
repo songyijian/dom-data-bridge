@@ -1,6 +1,6 @@
 {
   "name": "dom-data-bridge",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "js读取写在dom内的数据",
   "main": "./dist/index.js",
   "keywords": [
@@ -36,8 +36,7 @@
   "scripts": {
     "dev": "webpack-dev-server --config build/webpack.dev.config.js --NODE_ENV=development",
     "build": "webpack --config build/webpack.build.config.js --NODE_ENV=production",
-    "pushnpm": "git push && npm publish"
-
+    "pushnpm": "npm run build && git push && npm publish"
   },
   "repository": {
     "type": "git",
