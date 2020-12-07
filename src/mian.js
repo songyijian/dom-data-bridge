@@ -26,11 +26,10 @@ export default class DomDataDridge{
     let type = validate.type
     let _default = validate.default
     try{
-      if(this.exclude && this.exclude.test(this.dataMap[key])) throw new Error(`${this.dataMap[key]} by exclude excluded`);
+      if(this.exclude && this.exclude.test(this.dataMap[key]))throw Error(`${this.dataMap[key]} by ${this.exclude} excluded`);
       if(isRegExp(type) && type.test(this.dataMap[key])) return this.dataMap[key];
       return type ? parseMuster[ type.name || String(type) ](this.dataMap[key]) : this.dataMap[key];
     }catch(err){
-      // console.error(err)
       if(_default) return _default
     }
   }
@@ -44,8 +43,8 @@ export default class DomDataDridge{
         if(key in this.dataMap){
           if( isObj(validate) && ('type' in validate || 'default' in validate)){
             let getVal = this.schemaParse(key, validate)
-            getVal!==undefined && (a[key] = this.schemaParse(key, validate))
-          };
+            getVal!==undefined && (a[key] = getVal)
+          }
         }else{
           'default' in validate && (a[key] = validate['default'])
         }
