@@ -2,7 +2,7 @@
 用于解析html内的数据对象
 
 # 更新
- - get default 支持 false
+ - risk=true 会用
 
 ## 安装
 ```JS
@@ -19,30 +19,57 @@ yarn upgrade dom-data-bridge // 更新
 ```
 ## API
 ```JS
-import DomDataDridge from 'dom-data-bridge'
+import { domDataDridge, DataDridge, superParse } from 'dom-data-bridge'
 
-const demo = new DomDataDridge({
-  exclude:<RegExp>    // 排除指定字符 /^\{\{[a-zA-Z\.\_]+\}\}/g = {{xx}}
-})
+
+/**
+ * @Description: 支持高风险的json字符串解析
+ * @param {string} strs 要解析的'{字符串}'对象, 不可‘[]’
+ * @param {boolean} risk 利用eval可以解析一些不规范的{json}
+ * @return {object} '{a:1}' 
+ */
+superParse('{object string}',risk?=false)
+
+
+const demo = new DataDridge(
+  // 全局配置
+  {
+    risk: false,  // push(key|data, val?, risk?)
+    filter(a){  // get({filter})
+      return typeof a ==='number' ? ++a : a
+    }
+  }
+)
+
+demo.get({})
+
+
 
 FN
   // 插入（合并）要解析的内容
-  demo.push( "{json}"| <DOMStringMap> )
+  demo.push("{json}"| <DOMStringMap>|'key', val = '', risk = this.config.risk)
 
   // 获取数据
   demo.get(
     { // 解析｜验证规则
       key:{
-        type: Number, // 解析类型 （String|Number|Boolean|Object|Array) || RegExp正则验证
-        default:2 // 默认值
-      },
+        filter(a) {
+          return a < 0 ? 0 : a
+        },
+        type: Number,
+        default:undefined
+      }
+      // {
+      //   type: Number, // 解析类型 （String|Number|Boolean|Object|Array) || RegExp正则验证
+      //   default:2 // 默认值
+      // },
     }, 
     true // 建议开启Object.freeze（保护数被串改）
   )
 
 ATTR
   this.dataMap = {}   // 原始数据源
-  this.exclude = data.exclude // 全局排除规则
+  this.config = {risk,filter}// 全局排除规则
 
 ```
 

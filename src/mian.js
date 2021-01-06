@@ -1,62 +1,62 @@
 'use strict';
 
-import {isObj, isRegExp, isString, isType, isObjStr, isArrayStr, isJsonStr} from './isfn' ;
+import {isObj, isRegExp, isString, isFunction, isType, isObjStr, isBoolean} from './isfn' ;
 import {parseMuster} from './tool' ;
-import superParse from './parse' ;
+import superParse from './superParse';
 
-export default class DomDataDridge{
-  constructor(data={}){
+class DataDridge{
+  constructor(config={}){
     this.dataMap = {};
-    this.risk = !!data.risk;
-    isRegExp(data.exclude) && (this.exclude = data.exclude)
+    this.config = {
+      risk: isBoolean(config.risk) ? config.risk : false,
+      filter: isFunction(config.filter) ? config.filter : a => a
+    }
   }
 
-  push(wkey, val=''){
+  push(wkey, val = '', risk = this.config.risk) {
     try {
       if(isObj(wkey) || isType(wkey) === 'DOMStringMap'){
         Object.assign(this.dataMap, wkey)
       }
       else if(isObjStr(wkey)){
-        Object.assign(this.dataMap, superParse(wkey, this.risk))
+        Object.assign(this.dataMap, superParse(wkey, risk))
       }
       else if(isString(wkey) && val){
         Object.assign(this.dataMap, {[wkey]:val})
       }else{
-        console.error(` [DomDataDridge] > push error : ${wkey} ${val ? val :''} `)
+        console.error(`[DataDridge] > push error : ${wkey} ${val ? val :''} `)
       }
     } catch (error) {
-      console.error(` [DomDataDridge] > ${error} ignored`)
-    }
-  }
-
-  _schemaParse(key, validate){
-    let type = validate.type
-    let _default = validate.default
-    try{
-      if(this.exclude && this.exclude.test(this.dataMap[key]))throw Error(`${this.dataMap[key]} by ${this.exclude} excluded`);
-      if(isRegExp(type) && type.test(this.dataMap[key])) return this.dataMap[key];
-      return type ? parseMuster[ type.name || String(type) ](this.dataMap[key]) : this.dataMap[key];
-    }catch(err){
-      if(_default) return _default
+      console.error(`[DataDridge] > ${error} ignored`)
     }
   }
 
   get(schema, freeze=true) {
     if(!isObj(schema)) throw Error(`${this} schema is not a JSON`);
-    let a = {}
+    let a = {};
+    let DM = this.dataMap;
     for (const key in schema) {
       if (schema.hasOwnProperty(key)) {
         const validate = schema[key];
-        if(key in this.dataMap){
+        if(key in DM){
           if( isObj(validate) && ('type' in validate || 'default' in validate)){
-            // let getVal = this.schemaParse(key, validate)
-            // getVal!==undefined && (a[key] = getVal)
-            // if(this.exclude && this.exclude.test(this.dataMap[key]))throw Error(`${this.dataMap[key]} by ${this.exclude} excluded`);
-            let type = validate.type;
+            let { type, filter } = validate;
+            filter = isFunction(filter) ? filter : this.config.filter ;
+            
             try {
-              if(this.exclude && this.exclude.test(this.dataMap[key])) return;
-              if(isRegExp(type) && type.test(this.dataMap[key])) return this.dataMap[key];
-              a[key] = type ? parseMuster[ type.name || String(type) ](this.dataMap[key]) : this.dataMap[key];
+              let _dmk = DM[key];
+
+              if (typeof _dmk === 'undefined') throw Error('key not definde');
+
+              _dmk = filter(_dmk);
+              if (_dmk === undefined) throw Error('filter throw');
+
+              if(isRegExp(type) && type.test(_dmk)) {
+                a[key] = _dmk
+              }else{
+                a[key] = type ? parseMuster[ type.name || String(type) ](_dmk) : _dmk;
+              };
+
             } catch (error) {
               'default' in validate && (a[key] = validate.default)
             }
@@ -68,4 +68,15 @@ export default class DomDataDridge{
     }
     return freeze ? Object.freeze(a) : a
   }
+}
+
+function domDataDridge(params) {
+  return new DataDridge(params)
+}
+
+
+export {
+  domDataDridge,
+  DataDridge,
+  superParse,
 }
