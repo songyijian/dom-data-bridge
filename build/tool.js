@@ -51,27 +51,7 @@ function getIPAdress() {
 
 
 
-/*
-    param1 JSONstr 未格式化的JSON字符串
-    return 去【类空格字符】后的JSON字符串
-*/
-function JSONTrim(JSONstr) {
-  try {
-      JSONstr = JSONstr.replace(/'/g, '"');
-      JSONstr = JSON.stringify(JSON.parse(JSONstr));
-  } catch (error) {
-      // 转换失败错误提示
-      console.error('json数据格式有误...');
-      console.error(error);
-      JSONstr = null;
-  }
-  return JSONstr;
-}
-
-
-
 module.exports = {
-  Argvs:Argvs,
-  getIPAdress: getIPAdress,
-  JSONTrim
+  Argvs,
+  getIPAdress
 }

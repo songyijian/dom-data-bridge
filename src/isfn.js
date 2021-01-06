@@ -72,3 +72,23 @@ export function isTrue(o) {
 export function isType(o) {
   return Object.prototype.toString.call(o).slice(8, -1)
 }
+
+export function isObjStr(o) {
+  o = o.trim();
+  if(typeof o !== 'string' && o) return false;
+  let a = o.charAt(0);
+  let l = o.charAt(o.length-1);
+  return a==='{' && l==='}'
+}
+
+export function isArrayStr(o) {
+  o = o.trim();
+  if(typeof o !== 'string' && o) return false;
+  let a = o.charAt(0);
+  let l = o.charAt(o.length-1);
+  return a==='[' && l===']'
+}
+
+export function isJsonStr(o) {
+  return isArrayStr(o) || isObjStr(o)
+}

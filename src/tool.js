@@ -2,9 +2,13 @@ import {isObj, isArray, isString} from './isfn'
   
 export const parseMuster= {
   String,
-  Number,
+  "Number": a=>{
+    var n = Number(a);
+    if(!isNaN(n)) return n;
+    throw Error('is not Number')
+  },
   Boolean,
-  Object:(a)=>{
+  Object: a=>{
     if(isObj(a))return a;
     if(isString(a)){
       let obj = JSON.parse(a)
@@ -12,7 +16,7 @@ export const parseMuster= {
     };
     throw Error('is not Object')
   },
-  Array:(a)=>{
+  Array: a=>{
     if(isArray(a))return a;
     if(isString(a)){
       let array = JSON.parse(a)

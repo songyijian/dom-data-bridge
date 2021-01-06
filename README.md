@@ -1,6 +1,9 @@
 # dom-data-bridge
 用于解析html内的数据对象
 
+# 更新
+ - get default 支持 false
+
 ## 安装
 ```JS
 // npm 
