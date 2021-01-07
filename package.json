@@ -20,8 +20,7 @@
     "js"
   ],
   "author": "yijian.song <397032724@qq.com> (https://github.com/songyijian)",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "html-webpack-plugin": "^4.5.0",
     "webpack-dev-server": "^3.11.0",

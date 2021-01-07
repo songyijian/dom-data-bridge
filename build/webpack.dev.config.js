@@ -15,7 +15,8 @@ module.exports = merge(config,{
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: resolve('../demo/index.html')
+      template: resolve('../demo/index.html'),
+      inject: false,
     })
   ],
 

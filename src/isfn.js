@@ -74,16 +74,16 @@ export function isType(o) {
 }
 
 export function isObjStr(o) {
+  if(typeof o !== 'string') return false;
   o = o.trim();
-  if(typeof o !== 'string' && o) return false;
   let a = o.charAt(0);
   let l = o.charAt(o.length-1);
   return a==='{' && l==='}'
 }
 
 export function isArrayStr(o) {
+  if(typeof o !== 'string') return false;
   o = o.trim();
-  if(typeof o !== 'string' && o) return false;
   let a = o.charAt(0);
   let l = o.charAt(o.length-1);
   return a==='[' && l===']'

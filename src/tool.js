@@ -5,6 +5,7 @@ import superParse from './superParse';
 export const parseMuster= {
   String,
   Number: a=>{
+    console.log(`//// ${a}`);
     var n = Number(a);
     if(!isNaN(n)) return n;
     throw Error('is not Number')
@@ -21,7 +22,10 @@ export const parseMuster= {
   },
   Array: (a,risk)=>{
     if(isArray(a))return a;
-    if(isString(a)&&isArrayStr(a)){
+    a = a.trim()
+    console.log(a, isArrayStr(a));
+
+    if(isString(a) && isArrayStr(a)){
       return superParse(a,risk)
       // let array = JSON.parse(a)
       // if(isArray(array)) return array

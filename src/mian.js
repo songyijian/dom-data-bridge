@@ -9,7 +9,6 @@ function domDataDridge(params) {
   return new DataDridge(params)
 }
 
-
 export {
   DataDridge,
   parseMuster,

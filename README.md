@@ -88,58 +88,52 @@ parseMuster.Boolean === Boolean()
 ## DataDridge
 > 整理解析不标准数据，按照规则读取
 ```js
-const demo = new DataDridge({globeconfig})
-
-// 全局配置
-var globeconfig = {
+var globeconfig = { // 全局配置
   risk:  false, // <superParse> 接受风险解析非标准json
   filter: a => a  // 过滤函数
 }
 
+const demo = new DataDridge(globeconfig)
+
+      demo.dataMap = {}   // 原始数据源
+      demo.config = globeconfig // 全局排除规则
 
 
-// FN
+/**
+ * @Description: 插入数据
+ * @param {object｜'{}'｜key} wkey 【json｜‘{}’】会被解析成对象合并到dataMap，【string】生成{[wkey]:val}
+ * @param {*} val 当wkey=‘{}’时val必填
+ * @param {*} risk wkey=‘{}’ 是否利用superParse解析
+ */
+demo.push( wkey, val = '', risk = globeconfig.risk )
+  // demo.push( 'a', '1',) //yes
+  // demo.push( {a:1}, '') //yes
+  // demo.push( '{a:1}', '', true) //yes
+  // demo.push( '{"a":1}') // yes
+  // demo.push( '{a:1}', '') // error
+  // demo.push( '[]', '', true) //error
 
-  /**
-   * @Description: 插入数据
-   * @param {object｜'{}'｜key} wkey 【json｜‘{}’】会被解析成对象合并到dataMap，【string】生成{[wkey]:val}
-   * @param {*} val 当wkey=‘{}’时val必填
-   * @param {*} risk wkey=‘{}’ 是否利用superParse解析
-   */
-  demo.push( wkey, val = '', risk = globeconfig.risk )
-    // demo.push( 'a', '1',) //yes
-    // demo.push( {a:1}, '') //yes
-    // demo.push( '{a:1}', '', true) //yes
-    // demo.push( '{"a":1}') // yes
-    // demo.push( '{a:1}', '') // error
-    // demo.push( '[]', '', true) //error
+/**
+ * @Description: 根据（解析｜验证规则）获取数据
+ * @Author: yijian.song
+ * @Date: 2021-01-07 15:31:18
+ * @param {object} schema {filter:function,risk:boolean,type:<parseMuster>,default} 解析｜验证规则
+ * @param {boolean} risk parseMuster规则
+ * @return {object} schema 验证通过的{}
+ */
+get(schema, risk = globeconfig.risk)  
 
-  /**
-   * @Description: 根据（解析｜验证规则）获取数据
-   * @Author: yijian.song
-   * @Date: 2021-01-07 15:31:18
-   * @param {object} schema {filter:function,risk:boolean,type:<parseMuster>,default} 解析｜验证规则
-   * @param {boolean} risk parseMuster规则
-   * @return {object} schema 验证通过的{}
-   */
-  get(schema, risk = globeconfig.risk)  
-
-    schema = {
-      key:{
-        filter:(a)=>a,
-        risk:false,
-        type: "Object|Array|String|Boolean|Number｜RegExp", //  parseMuster| RegExp正则验证
-        default:2 // 默认值
-      }
+  schema = {
+    key:{
+      filter:(a)=>a,
+      risk:false,
+      type: "Object|Array|String|Boolean|Number｜RegExp", //  parseMuster| RegExp正则验证
+      default:2 // 默认值
     }
+  }
 
-    // 数据处理流程
-    filter > type( Object|Array ？ risk) > default
-
-
-// ATTR
-  this.dataMap = {}   // 原始数据源
-  this.config = globeconfig // 全局排除规则
+  // 数据处理流程
+  // filter > type( Object|Array ？ risk) > default
 
 ```
 
@@ -149,17 +143,16 @@ var globeconfig = {
 字符串应是一个标准json格式。 
 
 ```js
-const pjson = new DomDataDridge({exclude:/^\{\{[a-zA-Z\.\_]+\}\}/g}) // 排除未替换的{{xx}}模版字符串
+const pjson = new DataDridge()
 
 pjson.push(
-`{ 
-"star":"4.5", 
-"CONTENT":"一段内容", 
-"ITEMS":"[1,2,3,4]",
-"URL":"https://github.com/songyijian/dom-data-bridge",
-"TEMP_ERR":"{{TEMP_ERR}}"
-}`
- )
+  `{ 
+    "star":"4.5", 
+    "CONTENT":"一段内容", 
+    "ITEMS":"[1,2,3,4]",
+    "URL":"https://github.com/songyijian/dom-data-bridge",
+  }`
+)
 
 const getdata = pjson.get({
   star:{
@@ -180,31 +173,10 @@ const getdata = pjson.get({
   UNDFUND:{
     type:String,
     default:'默认值'
-  },
-  TEMP_ERR:{
-    type:String,
-    // {{TEMP_ERR}} 替换失败的模版，利用 exclude 统一排除
   }
 })
 
-console.log(pjson.dataMap, getdata)
 
-/*
-pjson.dataMap = {
-  star: "4.5", 
-  CONTENT: "一段内容", 
-  ITEMS: "[1,2,3,4]", 
-  URL: "https://github.com/songyijian/dom-data-bridge", 
-  TEMP_ERR: "{{TEMP_ERR}}" //模版没有正确被替换
-}
-getdata = {
-  star: 4.5, 
-  CONTENT: "一段内容", 
-  URL: "https://github.com/songyijian/dom-data-bridge", 
-  ITEMS: Array(4), 
-  UNDFUND: "默认值"
-}
-*/
 ```
 
 ## 解析 dom dataset 数据 

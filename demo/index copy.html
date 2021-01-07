@@ -9,8 +9,7 @@
 </head>
 
 <body>
-
-
+  <!-- 
     <h3> 不标准的json (obj) </h3>
     <textarea name="dom-data" id="obj" cols="80" rows="8">
       {
@@ -37,12 +36,11 @@
 
     <h3> 危险字段 risk</h3>
     <textarea name="dom-data" id="risk" cols="80" rows="2">
-      {alert(1);(function(){console.log(' is risk string')})()}
+      {alert(1);(function(){console.log('')})()}
     </textarea>
 
 
     <h3> html source </h3>
-
     <textarea name="dom-data" id="source" cols="80" rows="16">
       <!DOCTYPE html>
       <html lang="en">
@@ -54,6 +52,7 @@
       <body>
         <style> h1 {color: red} </style>
         <h1> card - htmlsource </h1>
+        <script> console.log('endcard_template line log'); </script>
       </body>
       </html>
     </textarea>
@@ -63,10 +62,9 @@
     <textarea id="get" cols="80" rows="30">
       
     </textarea> 
+  -->
 
-<% if(htmlWebpackPlugin.files) {for(var i=0; i < htmlWebpackPlugin.files.js.length; i++ ) { %>
-<script charset="utf-8" type="text/javascript" src="<%= htmlWebpackPlugin.files.js[i] %>"></script>
-<% }} %>
+
 
 </body>
 
