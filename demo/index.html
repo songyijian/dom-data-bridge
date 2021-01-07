@@ -11,44 +11,50 @@
 
 <body>
   <h1>dataset to json</h1>
-  <!-- <meta macro data-star={{STAR}} data-CONTENT={{CONTENT}} data-ITEMS={{ITEMS}} data-URL={{URL}} data-TEMP_ERR={{TEMP_ERR}}> -->
   <meta macro 
     data-star=4.5
     data-CONTENT=字符串内容的'双引号'要编译更不要出现
-    data-ITEMS=[1,2,3,4]
+    data-ITEMS=[1,2,3,4]xw
     data-URL=https://github.com/songyijian/dom-data-bridge
-    data-TEMP_ERR={{TEMP_ERR}}
+    data-TEMP_ERR="{{TEMP_ERR}}"
   />
 
   <br>
+  <h1> json string </h1>
 
-  <h1>script"text/template" string to json</h1>
-  <!-- <script macro type="text/template">
-    { 
-      "star":"{{STAT}}", 
-      "CONTENT":"{{CONTENT}}", 
-      "TEST":"{{TEST}}",
-      "ITEMS":"{{ITEMS}}"
-    }
-  </script> -->
   <script macro type="text/template">
     { 
-    "star":"4.5", 
-    "CONTENT":"一段内容", 
-    "ITEMS":"[1,2,3,4]",
-    "URL":"https://github.com/songyijian/dom-data-bridge",
-    "TEMP_ERR":"{{TEMP_ERR}}"
+      "star":"4.5", 
+      "CONTENT":"一段内容", 
+      "ITEMS":"[1,2,3,4]",
+      "URL":"https://github.com/songyijian/dom-data-bridge",
+      "TEMP_ERR":"{{TEMP_ERR}}"
     }
   </script>
 
-  <h1>script"text/template" string to json</h1>
+  <br>
+  <h1> key：val= object | * </h1>
+
+  <template macro=card >
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+    </head>
+    <body>
+      <style>
+        h1{ color:red}
+      </style>
+      <h1> card - htmlsource </h1>
+      <script>
+        console.log('endcard_template line log');
+      </script>
+    </body>
+    </html>
+  </template>
   <script macro type="text/template"> {"shade_hidden":0} </script>
-
-
-  <h1>template Attribute as key </h1>
-
-  <script macro type="text/template"> {"shade_hidden":0} </script>
-
 
 </body>
 
