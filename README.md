@@ -111,8 +111,6 @@ demo.push( wkey, val = '', risk = globeconfig.risk )
 
 /**
  * @Description: 根据（解析｜验证规则）获取数据
- * @Author: yijian.song
- * @Date: 2021-01-07 15:31:18
  * @param {object} schema {filter:function,risk:boolean,type:<parseMuster>,default} 解析｜验证规则
  * @param {boolean} risk parseMuster规则
  * @return {object} schema 验证通过的{}

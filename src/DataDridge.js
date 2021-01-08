@@ -60,15 +60,17 @@ export default class DataDridge{
           let { type, filter, risk } = validate;
               risk = isBoolean(risk) ? risk : this.config.risk;
               filter = isFunction(filter) ? filter : this.config.filter ;
-          if (typeof _dmk === 'undefined') throw Error('key not definde');
+
+          if (_dmk === undefined) throw Error(`${key} not definde`);
           _dmk = filter(_dmk);
-          if (_dmk === undefined) throw Error('filter throw');
+          if (_dmk === undefined) throw Error(`${key} filter retrun undefined`);
           if(isRegExp(type) && type.test(_dmk)) {
             a[key] = _dmk
           }else{
             a[key] = type ? parseMuster[ type.name || type.replace(type[0],type[0].toUpperCase()) ](_dmk,risk) : _dmk;
           }
         } catch (error) {
+          console.error(error);
           'default' in validate && (a[key] = validate.default)
         }
       

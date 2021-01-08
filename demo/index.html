@@ -10,8 +10,8 @@
 
 <body>
 
-<h3> 不标准的json (obj) </h3>
-<textarea name="dom-data" id="obj" cols="80" rows="8">
+<h4> 不标准的json (obj) </h4>
+<textarea name="dom-data" data-dridge id="obj" cols="80" rows="8">
   {
     a:1,
     "b":'string',
@@ -22,29 +22,29 @@
   }
 </textarea>
 
-<h3> 不标准的json (array) </h3>
-<textarea name="dom-data" id="array" cols="80" rows="2">
+<h4> 不标准的json (array) </h4>
+<textarea name="dom-data" data-dridge=array id="array" cols="80" rows="2">
 [ '1',2]
 </textarea>
 
-<h3> 危险字段 risk</h3>
-<textarea name="dom-data" id="risk" cols="80" rows="2">
+<h4> 危险字段 risk</h4>
+<textarea name="dom-data" data-dridge=risk id="risk" cols="80" rows="2">
   {alert(1);(function(){console.log(' is risk string')})()}
 </textarea>
 
-<h3> 不标准的number </h3>
-<textarea name="dom-data" id="number" cols="80" rows="2">
+<h4> 不标准的number </h4>
+<textarea name="dom-data" data-dridge=number id="number" cols="80" rows="2">
   '1234eer'
 </textarea>
 
-<h3> baidu url (regexp)</h3>
-<textarea name="dom-data" id="url" cols="80" rows="2">
+<h4> baidu url (regexp)</h4>
+<textarea name="dom-data" data-dridge=url id="url" cols="80" rows="2">
   https://www.baidu.com/
 </textarea>
 
 
-<h3> html source </h3>
-<textarea name="dom-data" id="source" cols="80" rows="12">
+<h4> html source </h4>
+<textarea name="dom-data" data-dridge=source id="source" cols="80" rows="12">
   <!DOCTYPE html>
   <html lang="en">
   <head>
@@ -62,7 +62,6 @@
 
 <h1> 解析完成 </h1>
 <textarea id="result" cols="80" rows="30">
-  
 </textarea> 
 
 <% if(htmlWebpackPlugin.files) {for(var i=0; i < htmlWebpackPlugin.files.js.length; i++ ) { %>

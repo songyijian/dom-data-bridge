@@ -30,27 +30,21 @@ export function superParse(strs,risk=false){
   
 export const parseMuster= {
   String,
+  Boolean,
   Number: a=>{
     var n = Number(a);
     if(!isNaN(n)) return n;
     throw Error('is not Number')
   },
-  Boolean,
   Object: (a,risk)=>{
     if(isObj(a))return a;
-    if(isString(a) && isObjStr(a)){
-      return superParse(a,risk)
-    };
+    if(isString(a) && isObjStr(a))return superParse(a,risk);
     throw Error('is not Object')
   },
   Array: (a,risk)=>{
     if(isArray(a))return a;
     a = a.trim()
-    console.log(a, isArrayStr(a));
-
-    if(isString(a) && isArrayStr(a)){
-      return superParse(a,risk)
-    }
+    if(isString(a) && isArrayStr(a))return superParse(a,risk);
     throw Error('is not Array')
   }
 }
