@@ -9,9 +9,15 @@
 </head>
 
 <body>
+<style>
+  div{ width: 48vw; float: left; }
+  textarea{ width: 90%;}
+</style>
 
-<h4> 不标准的json (obj) </h4>
-<textarea name="dom-data" data-dridge id="obj" cols="80" rows="8">
+
+<div>
+<h4> object </h4>
+<textarea data-dridge id="obj" rows="8">
   {
     a:1,
     "b":'string',
@@ -22,29 +28,29 @@
   }
 </textarea>
 
-<h4> 不标准的json (array) </h4>
-<textarea name="dom-data" data-dridge=array id="array" cols="80" rows="2">
+<h4> array  </h4>
+<textarea data-dridge=array id="array" rows="2">
 [ '1',2]
 </textarea>
 
-<h4> 危险字段 risk</h4>
-<textarea name="dom-data" data-dridge=risk id="risk" cols="80" rows="2">
+<h4> risk : 危险字段 </h4>
+<textarea data-dridge=risk id="risk" rows="2">
   {alert(1);(function(){console.log(' is risk string')})()}
 </textarea>
 
-<h4> 不标准的number </h4>
-<textarea name="dom-data" data-dridge=number id="number" cols="80" rows="2">
+<h4> number </h4>
+<textarea data-dridge=number id="number" rows="2">
   '1234eer'
 </textarea>
 
-<h4> baidu url (regexp)</h4>
-<textarea name="dom-data" data-dridge=url id="url" cols="80" rows="2">
+<h4> url (regexp)</h4>
+<div data-dridge=url id="url" rows="2">
   https://www.baidu.com/
-</textarea>
+</div>
 
 
-<h4> html source </h4>
-<textarea name="dom-data" data-dridge=source id="source" cols="80" rows="12">
+<h4> source </h4>
+<textarea data-dridge=source id="source" rows="10">
   <!DOCTYPE html>
   <html lang="en">
   <head>
@@ -58,16 +64,23 @@
   </body>
   </html>
 </textarea>
+</div>
 
 
-<h1> 解析完成 </h1>
-<textarea id="result" cols="80" rows="30">
-</textarea> 
+
+<div>
+  <h1> 解析结果 </h1>
+  <textarea id="result" rows="20">
+  </textarea>
+  <button> 解析 </button>
+</div>
+
+
+
 
 <% if(htmlWebpackPlugin.files) {for(var i=0; i < htmlWebpackPlugin.files.js.length; i++ ) { %>
 <script charset="utf-8" type="text/javascript" src="<%= htmlWebpackPlugin.files.js[i] %>"></script>
 <% }} %>
-
 </body>
 
 </html>

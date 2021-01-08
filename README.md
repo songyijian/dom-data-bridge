@@ -1,6 +1,6 @@
 # dom-data-bridge
-> json解析（整理解析不标准数据）按照规则读取;
-JSON text analysis, rule validation value
+> 核心功能：解析string格式json数据
+
 
 
 ## 安装
@@ -26,60 +26,35 @@ import {
 } from 'dom-data-bridge'
 ```
 
-### superParse
-> superParse 字符串json解析，可针对非标准开启风险解析
-<!-- > superParse > parseMuster > DataDridge 内的解析规则 -->
-```js
-/**
- * @Description: 支持高风险的json字符串解析
- * @param {string} strs 要解析的'{字符串}'对象, 不可‘[]’
- * @param {boolean} risk 利用eval可以解析一些不规范的{json}
- * @return {object} 
- */
-superParse(string,risk)
-  // string : '{}' | '[]'
-  // risk :true = 可以解析一些不规范的{json} 但是存在风险，谨慎使用
 
-  superParse('{a:1}') // Error
-  superParse('{"a":1}') // {a:1}
-  superParse('{a:1}',true) // {a:1}
-  superParse('[{a:1},2]') // Error
-  superParse('[{a:1},2]',true) // [{…}, 2]
+
+## domDataDridge
+```
+// domDataDridge会过滤： data-dridge 属性的dom ; data-dridge="key" ,把dom内容作为 val
+
+<textarea data-dridge=array id="array" rows="2">
+[ '1',2]
+</textarea>
+
+
+let demo = domDataDridge()
+    // demo === retrun mew DataDridge(creatfilter)
+
+    // demo.push() === new DataDridge.push()
+    // demo.get() === new DataDridge.get()
+
+    // creatfilter push 前的回调
+    function creatfilter({key,val}) {
+      if (key === ''){
+        key = 'object'
+        val = 'data-dridge, key为空被creatfilter过滤处理'
+      }
+      return {key, val}
+    }
+
 
 ```
 
-
-### parseMuster
-> superParse > parseMuster ,DataDridge 内的解析（验证）规则
-```js
-let {Object, Array, String, Boolean, Number} = parseMuster;
-
-/**
- * @Description: 解析验证数据类型
- * @param {Object, Array, String, Boolean, Number} a 要解析的'{字符串}'对象, 不可‘[]’
- * @param {boolean} risk 利用eval可以解析一些不规范的{json}
- * @throw {Error} 解析+验证 失败
- */
-parseMuster[key](a,risk) // Object&Array == <superParse>
-
-  // Object {}
-  parseMuster.Object('{a:1}') // Error
-  parseMuster.Object('{a:1}',true) // {a:1}
-  parseMuster.Object('{"a":1}') // {a:1}
-  parseMuster.Object({a:1},true)  // {a:1}
-
-  // Array []
-  parseMuster.Array('{a:1}',true) // Error
-  parseMuster.Array('[{a:1},2]') // Error
-  parseMuster.Array('[{a:1},2]',true) // [{…}, 2]
-
-  // Number 对NaN做了处理
-  parseMuster.Number == Number() 
-  parseMuster.Number(NaN) //Error
-
-  parseMuster.String === String()
-  parseMuster.Boolean === Boolean()
-```
 
 
 ## DataDridge
@@ -131,4 +106,61 @@ get(schema, risk = globeconfig.risk)
 
 ```
 
+
+
+### parseMuster
+> superParse > parseMuster ,DataDridge 内的解析（验证）规则
+```js
+let {Object, Array, String, Boolean, Number} = parseMuster;
+
+/**
+ * @Description: 解析验证数据类型
+ * @param {Object, Array, String, Boolean, Number} a 要解析的'{字符串}'对象, 不可‘[]’
+ * @param {boolean} risk 利用eval可以解析一些不规范的{json}
+ * @throw {Error} 解析+验证 失败
+ */
+parseMuster[key](a,risk) // Object&Array == <superParse>
+
+  // Object {}
+  parseMuster.Object('{a:1}') // Error
+  parseMuster.Object('{a:1}',true) // {a:1}
+  parseMuster.Object('{"a":1}') // {a:1}
+  parseMuster.Object({a:1},true)  // {a:1}
+
+  // Array []
+  parseMuster.Array('{a:1}',true) // Error
+  parseMuster.Array('[{a:1},2]') // Error
+  parseMuster.Array('[{a:1},2]',true) // [{…}, 2]
+
+  // Number 对NaN做了处理
+  parseMuster.Number == Number() 
+  parseMuster.Number(NaN) //Error
+
+  parseMuster.String === String()
+  parseMuster.Boolean === Boolean()
+```
+
+
+
+### superParse
+> superParse 字符串json解析，可针对非标准开启风险解析
+<!-- > superParse > parseMuster > DataDridge 内的解析规则 -->
+```js
+/**
+ * @Description: 支持高风险的json字符串解析
+ * @param {string} strs 要解析的'{字符串}'对象, 不可‘[]’
+ * @param {boolean} risk 利用eval可以解析一些不规范的{json}
+ * @return {object} 
+ */
+superParse(string,risk)
+  // string : '{}' | '[]'
+  // risk :true = 可以解析一些不规范的{json} 但是存在风险，谨慎使用
+
+  superParse('{a:1}') // Error
+  superParse('{"a":1}') // {a:1}
+  superParse('{a:1}',true) // {a:1}
+  superParse('[{a:1},2]') // Error
+  superParse('[{a:1},2]',true) // [{…}, 2]
+
+```
 
