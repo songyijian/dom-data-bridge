@@ -7,6 +7,8 @@ import {
 } from '../src/mian.js'
 
 
+console.log(domDataDridge())
+
 function filter(a) {
   return a.replace(/\s/g, '').replace(/\n+/g, '')
 }
@@ -16,11 +18,10 @@ let demo = new DataDridge({
 
 
 var domdata = document.querySelectorAll('[name="dom-data"]')
-
-var getbox = document.getElementById('get')
+var resultbox = document.getElementById('result')
 
 Array.from(domdata).forEach(i=>{
-  let val = i.value//.replace(/\n+/g, '');
+  let val = i.value
   if (i.id === "obj"){
     demo.push(val,'' ,true)
   }else{
@@ -30,13 +31,36 @@ Array.from(domdata).forEach(i=>{
 
 var getdata = demo.get({
   array: {
-    type: Array,
+    risk:true,
+    type: array,
     default: 'array error'
   },
   number:{
-    filter: a => a.replace(/^\D+/g, ''),
+    filter: a => a.replace(/\D+/g, ''),
     type:Number,
     default:1000
+  },
+  risk:{
+    risk:true,
+    type:Object,
+    default:'risk可以规避掉一部分危险行为，但不穷尽，请谨慎使用！'
+  },
+  url:{
+    type:/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/,
+    default:'https://www.google.com/'
+  },
+  source:{
+    filter:a=>{
+      a = a.replace(/\n+/g, '').replace(/\s+</g, '<')//.replace(/\"/g, '')
+      a = 'get覆盖全局filter，预先处理内容:'+a;
+      return a
+    },
+    type: String,
+    default:'<h1> 解析失败 </h1>'
+  },
+  defaultTset:{
+    type: String,
+    default:'找不到就走这里'
   }
 })
 
@@ -44,9 +68,8 @@ console.log(demo.dataMap);
 console.log(getdata);
 
 
-
-getbox.value += `demo.dataMap: 
-
+resultbox.value = `
+demo.dataMap: 
 ${JSON.stringify(demo.dataMap,null,2)}
 
 ---------------

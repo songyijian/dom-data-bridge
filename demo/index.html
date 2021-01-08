@@ -5,64 +5,65 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>My-App</title>
+  <title>DataDridge</title>
 </head>
 
 <body>
 
+<h3> 不标准的json (obj) </h3>
+<textarea name="dom-data" id="obj" cols="80" rows="8">
+  {
+    a:1,
+    "b":'string',
+    "c": [1,2],
+    "d":{
+      d1:[1,3]
+    }
+  }
+</textarea>
 
-    <h3> 不标准的json (obj) </h3>
-    <textarea name="dom-data" id="obj" cols="80" rows="8">
-      {
-        a:1,
-        "b":'string',
-        "c": [1,2],
-        "d":{
-          d1:[1,3]
-        }
-      }
-    </textarea>
+<h3> 不标准的json (array) </h3>
+<textarea name="dom-data" id="array" cols="80" rows="2">
+[ '1',2]
+</textarea>
 
-    <h3> 不标准的json (array) </h3>
-    <textarea name="dom-data" id="array" cols="80" rows="2">
-      "[ '1',2]"
-    </textarea>
+<h3> 危险字段 risk</h3>
+<textarea name="dom-data" id="risk" cols="80" rows="2">
+  {alert(1);(function(){console.log(' is risk string')})()}
+</textarea>
 
+<h3> 不标准的number </h3>
+<textarea name="dom-data" id="number" cols="80" rows="2">
+  '1234eer'
+</textarea>
 
-    <h3> 不标准的number </h3>
-    <textarea name="dom-data" id="number" cols="80" rows="2">
-      1.23bc
-    </textarea>
-
-
-    <h3> 危险字段 risk</h3>
-    <textarea name="dom-data" id="risk" cols="80" rows="2">
-      {alert(1);(function(){console.log(' is risk string')})()}
-    </textarea>
-
-
-    <h3> html source </h3>
-
-    <textarea name="dom-data" id="source" cols="80" rows="16">
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-      </head>
-      <body>
-        <style> h1 {color: red} </style>
-        <h1> card - htmlsource </h1>
-      </body>
-      </html>
-    </textarea>
+<h3> baidu url (regexp)</h3>
+<textarea name="dom-data" id="url" cols="80" rows="2">
+  https://www.baidu.com/
+</textarea>
 
 
-    <h1> 解析完成 </h1>
-    <textarea id="get" cols="80" rows="30">
-      
-    </textarea> 
+<h3> html source </h3>
+<textarea name="dom-data" id="source" cols="80" rows="12">
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <style> h1 {color: '#000'} </style>
+    <h1> card - htmlsource </h1>
+  </body>
+  </html>
+</textarea>
+
+
+<h1> 解析完成 </h1>
+<textarea id="result" cols="80" rows="30">
+  
+</textarea> 
 
 <% if(htmlWebpackPlugin.files) {for(var i=0; i < htmlWebpackPlugin.files.js.length; i++ ) { %>
 <script charset="utf-8" type="text/javascript" src="<%= htmlWebpackPlugin.files.js[i] %>"></script>

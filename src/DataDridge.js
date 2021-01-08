@@ -2,7 +2,6 @@
 
 import {isObj, isRegExp, isString, isFunction, isType, isObjStr, isBoolean} from './isfn' ;
 import {parseMuster} from './tool' ;
-import superParse from './superParse';
 
 export default class DataDridge{
   constructor(config={}){
@@ -27,7 +26,7 @@ export default class DataDridge{
         Object.assign(this.dataMap, wkey)
       }
       else if(isObjStr(wkey)){
-        Object.assign(this.dataMap, superParse(wkey, risk))
+        Object.assign(this.dataMap, parseMuster.Object(wkey, risk))
       }
       else if(isString(wkey) && val){
         Object.assign(this.dataMap, {[wkey]:val})
@@ -47,39 +46,32 @@ export default class DataDridge{
    * @param {boolean} risk parseMuster规则
    * @return {object} schema 验证通过的{}
    */
-  get(schema, risk = this.config.risk) {
+  get(schema) {
     if(!isObj(schema)) throw Error(`${this} schema is not a JSON`);
     let a = {};
     let DM = this.dataMap;
     for (const key in schema) {
       if (schema.hasOwnProperty(key)) {
         const validate = schema[key];
-        if(key in DM){
-          if( isObj(validate) && ('type' in validate || 'default' in validate)){
-            let { type, filter } = validate;
-            filter = isFunction(filter) ? filter : this.config.filter ;
-            
-            try {
-              let _dmk = DM[key];
+        if(!(key in DM)){ 'default' in validate && (a[key] = validate.default); break}
 
-              if (typeof _dmk === 'undefined') throw Error('key not definde');
-
-              _dmk = filter(_dmk);
-              if (_dmk === undefined) throw Error('filter throw');
-
-              if(isRegExp(type) && type.test(_dmk)) {
-                a[key] = _dmk
-              }else{
-                a[key] = type ? parseMuster[ type.name || String(type) ](_dmk,risk) : _dmk;
-              };
-
-            } catch (error) {
-              'default' in validate && (a[key] = validate.default)
-            }
+        try {
+          let _dmk = DM[key];
+          let { type, filter, risk } = validate;
+              risk = isBoolean(risk) ? risk : this.config.risk;
+              filter = isFunction(filter) ? filter : this.config.filter ;
+          if (typeof _dmk === 'undefined') throw Error('key not definde');
+          _dmk = filter(_dmk);
+          if (_dmk === undefined) throw Error('filter throw');
+          if(isRegExp(type) && type.test(_dmk)) {
+            a[key] = _dmk
+          }else{
+            a[key] = type ? parseMuster[ type.name || type.replace(type[0],type[0].toUpperCase()) ](_dmk,risk) : _dmk;
           }
-        }else{
+        } catch (error) {
           'default' in validate && (a[key] = validate.default)
         }
+      
       }
     }
     return a

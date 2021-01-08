@@ -1,13 +1,9 @@
 'use strict';
 
-// import {isObj, isRegExp, isString, isFunction, isType, isObjStr, isBoolean} from './isfn' ;
-import {parseMuster} from './tool' ;
-import superParse from './superParse';
+import {parseMuster,superParse} from './tool' ;
 import DataDridge from './DataDridge';
+import domDataDridge from './domDataDridge';
 
-function domDataDridge(params) {
-  return new DataDridge(params)
-}
 
 export {
   DataDridge,
