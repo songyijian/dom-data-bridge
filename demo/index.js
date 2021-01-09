@@ -16,16 +16,21 @@ go();
 
 function go() {
 
-  let demo = domDataDridge(function (a) {
-    let {key,val} =  a;
+  function creatfilter({key,val}) {
     if (key === ''){
       key = 'object'
-      val = 'data-dridge, key为空被creatfilter过滤处理'
+      val = 'data-dridge="", 被creatfilter过滤处理'
     }
     return {key, val}
-  })
+  }
+
+  let demo = domDataDridge(creatfilter)
 
   var getdata = demo.get({
+    object: {
+      // type: Object,
+      // default:{d1:'验证失败'}
+    },
     array: {
       risk: true,
       type: Array,
@@ -53,10 +58,6 @@ function go() {
       },
       type: String,
       default: '<h1> 解析失败 </h1>'
-    },
-    object: {
-      // type: "Object",
-      // default:{d1:'验证失败'}
     },
     defaultTset: {
       type: String,
