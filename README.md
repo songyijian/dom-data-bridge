@@ -39,7 +39,6 @@ import {
 
 let demo = domDataDridge()
     // demo === retrun mew DataDridge(creatfilter)
-
     // demo.push() === new DataDridge.push()
     // demo.get() === new DataDridge.get()
 
@@ -58,16 +57,16 @@ let demo = domDataDridge()
 
 
 ## DataDridge
-> 整理解析不标准数据，按照规则读取。 更过细节见demo/index
+> 整理解析不标准数据，按照规则读取。 更多细节见demo/index
 ```js
-var globeconfig = { // 全局配置
+var globalConfig = { // 全局配置
   risk:  false, // <superParse> 接受风险解析非标准json
   filter: a => a  // 过滤函数
 }
 
-const demo = new DataDridge(globeconfig)
+const demo = new DataDridge(globalConfig)
       demo.dataMap = {}   // 原始数据源
-      demo.config = globeconfig // 全局排除规则
+      demo.config = globalConfig // 全局排除规则
 
 
 /**
@@ -76,7 +75,7 @@ const demo = new DataDridge(globeconfig)
  * @param {*} val 当wkey=‘{}’时val必填
  * @param {*} risk wkey=‘{}’ 是否利用superParse解析
  */
-demo.push( wkey, val = '', risk = globeconfig.risk )
+demo.push( wkey, val = '', risk = globalConfig.risk )
   // demo.push( '{"a":1}') // yes
   // demo.push( 'a', '1',) //yes
   // demo.push( '{a:1}', '', true) //yes
@@ -90,7 +89,7 @@ demo.push( wkey, val = '', risk = globeconfig.risk )
  * @param {boolean} risk parseMuster规则
  * @return {object} schema 验证通过的{}
  */
-get(schema, risk = globeconfig.risk)  
+get(schema, risk = globalConfig.risk)  
 
   schema = {
     key:{
@@ -143,7 +142,7 @@ parseMuster[key](a,risk) // Object&Array == <superParse>
 
 
 ### superParse
-> superParse 字符串json解析，可针对非标准开启风险解析
+> superParse 字符串json解析，可针对非标准的数据字符串开启风险解析，
 <!-- > superParse > parseMuster > DataDridge 内的解析规则 -->
 ```js
 /**
